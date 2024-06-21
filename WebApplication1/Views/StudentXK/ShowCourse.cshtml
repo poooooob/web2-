@@ -17,6 +17,24 @@
             <h2 class="panel-title">选课大厅</h2>
         </header>
         <div class="panel-body">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-info">
+                    @TempData["Message"]
+                </div>
+            }
+            <form method="get" action="@Url.Action("ShowCourse")" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="搜索课程">
+                    <div class="input-group-append"> 
+                        <button type="submit" class="btn btn-primary">搜索</button>
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='@Url.Action("ShowCourse")'">返回</button>
+                     </div>
+      
+                </div>
+            </form>
+
+
             <div class="table-responsive">
                 <table class="table mb-none">
                     <thead>

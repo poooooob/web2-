@@ -15,10 +15,11 @@ namespace WebApplication1.Controllers
         private const int PageSize = 5;
 
         // 展示可选课程
-        public IActionResult ShowCourse(int? page)
+        public IActionResult ShowCourse(string searchString, int? page)
         {
             // 将用户名存入ViewData,以便在页面上显示
             ViewData["UserName"] = HttpContext.Session.GetString("UserName");
+            ViewData["CurrentFilter"] = searchString;
 
             int pageNumber = page ?? 1; // 如果page有值就赋值给pageNumber，否则pageNumber赋值为1
 
@@ -27,7 +28,12 @@ namespace WebApplication1.Controllers
             {
                 // 查询课程列表
                 var courses = db.Courses.OrderBy(c => c.CourseId).ToPagedList(pageNumber, PageSize);
-                
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    courses = db.Courses.Where(c => c.CourseName.Contains(searchString)).OrderBy(c => c.CourseId).ToPagedList(pageNumber, PageSize);
+                }
+
                 return View(courses);
             }
         }
@@ -53,9 +59,6 @@ namespace WebApplication1.Controllers
 
             }
         }
-
-
-
 
         //选课
         public IActionResult StudentXK(int CourseId)
@@ -88,16 +91,22 @@ namespace WebApplication1.Controllers
                         StuId = int.Parse(stuId)
                     });
                     db.SaveChanges();
+                    TempData["Message"] = "选课成功!";
                 }
+                else
+                {
+                    TempData["Message"] = "你已经选过这门课程!";
+
+                }
+                return RedirectToAction("ShowCourse");
             }
-            return RedirectToAction("ShowStudentXK");
         }
 
-     
+
         // 展示确认删除选课页面
         public IActionResult DeleteXK(int courseId)
         {
-           using (var db = new _2109060310DbContext())
+            using (var db = new _2109060310DbContext())
             {
                 var course = db.Courses.Find(courseId);
                 return View(course);
@@ -124,5 +133,41 @@ namespace WebApplication1.Controllers
         }
 
 
+        //学生个人信息页面
+        public IActionResult StudentInfo()
+        {
+            // 将用户名存入ViewData,以便在页面上显示
+            ViewData["UserName"] = HttpContext.Session.GetString("UserName");
+            // 获取当前用户的用户名
+            var stuId = HttpContext.Session.GetString("UserName");
+
+            using (var db = new _2109060310DbContext())
+            {
+                // 查询当前用户的个人信息
+                var student = db.Students.Find(int.Parse(stuId));
+                return View(student);
+            }
+        }
+
+        //修改密码
+        public IActionResult UpdatePassword(int stuId, string currentPassword, string newPassword)
+        {
+            using (var db = new _2109060310DbContext())
+            {
+                var student = db.Students.Find(stuId);
+                if (student != null && student.StuInitpwd == currentPassword)
+                {
+                    student.StuInitpwd = newPassword;
+                    db.SaveChanges();
+                    TempData["Message"] = "密码更新成功!";
+                }
+                else
+                {
+                    TempData["Message"] = "当前密码不正确，密码更新失败!";
+                }
+            }
+            return RedirectToAction("StudentInfo");
+
+        }
     }
 }

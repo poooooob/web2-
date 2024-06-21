@@ -1,0 +1,69 @@
+﻿@using WebApplication1.Models
+@model Student
+@{
+    Layout = "_Layout";
+}
+
+<div>
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+
+            <h2 class="panel-title">学生个人信息</h2>
+        </header>
+        <div class="panel-body">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-info">
+                    @TempData["Message"]
+                </div>
+            }
+            <div class="form-horizontal form-bordered">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">学号</label>
+                    <div class="col-md-6">
+                        <p class="form-control-static">@Model.StuId</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">姓名</label>
+                    <div class="col-md-6">
+                        <p class="form-control-static">@Model.StuName</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">班级</label>
+                    <div class="col-md-6">
+                        <p class="form-control-static">@Model.StuClass</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 修改密码表单 -->
+            <form method="post" action="@Url.Action("UpdatePassword")" class="form-horizontal form-bordered mt-4">
+                <input type="hidden" name="stuId" value="@Model.StuId" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label">当前密码</label>
+                    <div class="col-md-6">
+                        <input type="password" name="currentPassword" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">新密码</label>
+                    <div class="col-md-6">
+                        <input type="password" name="newPassword" class="form-control" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-3">
+                        <button type="submit" class="btn btn-primary">更新密码</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </section>
+</div>
