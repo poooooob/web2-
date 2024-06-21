@@ -1,0 +1,47 @@
+﻿@using WebApplication1.Models
+@{
+    Layout = "_Layout";
+}
+
+<div>
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+
+            <h2 class="panel-title">Actions</h2>
+            <!-- 新增课程按钮 -->
+            <a href="@Url.Action("CourseAdd", "Course")" class="btn btn-success">新增课程</a>
+        </header>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table mb-none">
+                    <thead>
+                        <tr>
+                            <th>课程ID</th>
+                            <th>课程名称</th>
+                            <th>课程学分</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.CourseId</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.Credits</td>
+                                <td class="actions">
+                                    <a href="@Url.Action("CourseEdit", "Course", new { id = item.CourseId })"><i class="fa fa-pencil"></i></a>
+                                    <a href="@Url.Action("CourseDelete", "Course", new { id = item.CourseId })" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

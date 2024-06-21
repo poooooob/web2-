@@ -1,0 +1,50 @@
+﻿@model WebApplication1.Models.Course
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>删除课程</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+<h3>您确定要删除以下课程吗？</h3>
+<div>
+    <h4>课程</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            课程ID
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CourseId
+        </dd>
+        <dt class="col-sm-2">
+            课程名称
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CourseName
+        </dd>
+        <dt class="col-sm-2">
+            课程学分
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Credits
+        </dd>
+    </dl>
+
+    <form asp-action="ConfirmDelete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.CourseId" />
+        <input type="submit" value="删除" class="btn btn-danger" /> |
+        <a asp-action="ShowAllCourse" class="btn btn-default">取消</a>
+    </form>
+</div>

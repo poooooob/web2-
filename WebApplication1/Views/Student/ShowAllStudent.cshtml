@@ -1,0 +1,49 @@
+﻿@using WebApplication1.Models
+@{
+    Layout = "_Layout";
+}
+
+<div>
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+
+            <h2 class="panel-title">Actions</h2>
+            <!-- 新增学生按钮 -->
+            <a href="@Url.Action("StudentAdd", "Student")" class="btn btn-success">新增学生</a>
+        </header>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table mb-none">
+                    <thead>
+                        <tr>
+                            <th>学生ID</th>
+                            <th>学生姓名</th>
+                            <th>班级</th>
+                            <th>初始密码</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.StuId</td>
+                                <td>@item.StuName</td>
+                                <td>@item.StuClass</td>
+                                <td>@item.StuInitpwd</td>
+                                <td class="actions">
+                                    <a href="@Url.Action("StudentEdit", "Student", new { id = item.StuId })"><i class="fa fa-pencil"></i></a>
+                                    <a href="@Url.Action("StudentDelete", "Student", new { id = item.StuId })" class="delete-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

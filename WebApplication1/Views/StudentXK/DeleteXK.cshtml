@@ -1,0 +1,35 @@
+﻿@model WebApplication1.Models.Course
+
+@{
+    Layout = "_Layout";
+}
+
+<div>
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+            <h2 class="panel-title">确认退选课程</h2>
+        </header>
+        <div class="panel-body">
+            <div>
+                <p>您确定要退选以下课程吗？</p>
+                <dl class="dl-horizontal">
+                    <dt>课程ID：</dt>
+                    <dd>@Model.CourseId</dd>
+                    <dt>课程名称：</dt>
+                    <dd>@Model.CourseName</dd>
+                    <dt>课程学分：</dt>
+                    <dd>@Model.Credits</dd>
+                </dl>
+                <form asp-action="ConfirmDeleteXK" method="post">
+                    @Html.HiddenFor(model => model.CourseId)
+                    <button type="submit" class="btn btn-danger">确认退选</button>
+                    <a asp-action="ShowStudentXK" class="btn btn-default">取消</a>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
